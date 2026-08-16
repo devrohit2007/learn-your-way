@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Learn Your Way</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <span class="nav-logo">Learn Your Way</span>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode">
+      <span class="theme-icon" id="themeIcon">☀</span>
+    </button>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-inner">
+      <p class="hero-eyebrow">Suvidha AI Hackathon 2026</p>
+      <h1 class="hero-heading">
+        You don't have to<br />
+        learn it <em>their</em> way.
+      </h1>
+      <p class="hero-sub">
+        Some people don't struggle to learn.<br />
+        They struggle with the way information is presented.
+      </p>
+      <div class="hero-actions">
+        <a href="learn.html" class="btn btn-primary">Start Learning</a>
+        <a href="#demo" class="btn btn-secondary">Try an Example</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROBLEM STRIP -->
+  <section class="problem">
+    <div class="container">
+      <p class="problem-text">
+        A textbook paragraph that takes 10 reads to understand might click immediately
+        when explained as a story, a diagram, or a simple analogy.
+        The knowledge was never the barrier — the <strong>format</strong> was.
+      </p>
+    </div>
+  </section>
+
+  <!-- LIVE DEMO -->
+  <section class="demo" id="demo">
+    <div class="container">
+      <p class="section-label">See it in action</p>
+      <h2 class="section-heading">Same concept. Four explanations.</h2>
+      <p class="section-sub">This is what Learn Your Way does with any text you paste.</p>
+
+      <!-- Source concept -->
+      <div class="concept-source">
+        <span class="concept-tag">Original</span>
+        <p class="concept-original">
+          "A pointer is a variable that stores the memory address of another variable."
+        </p>
+      </div>
+
+      <!-- Four cards -->
+      <div class="modes-grid">
+        <div class="mode-card" data-mode="simple">
+          <div class="mode-header">
+            <span class="mode-icon">◎</span>
+            <span class="mode-label">Simple</span>
+          </div>
+          <p class="mode-text">
+            A pointer is a variable that remembers <em>where</em> another variable lives in memory — not the value itself, just its location.
+          </p>
+        </div>
+
+        <div class="mode-card" data-mode="analogy">
+          <div class="mode-header">
+            <span class="mode-icon">◈</span>
+            <span class="mode-label">Analogy</span>
+          </div>
+          <p class="mode-text">
+            Imagine a variable is a house. A pointer is a piece of paper with that house's address written on it. You're not holding the house — you're holding directions to it.
+          </p>
+        </div>
+
+        <div class="mode-card" data-mode="visual">
+          <div class="mode-header">
+            <span class="mode-icon">◱</span>
+            <span class="mode-label">Visual</span>
+          </div>
+          <div class="visual-demo">
+            <div class="vd-box">Variable <span class="vd-val">x = 42</span></div>
+            <div class="vd-arrow">↓ stored at</div>
+            <div class="vd-box vd-addr">Memory address <span class="vd-val">0x7ffd</span></div>
+            <div class="vd-arrow">↑ stored in</div>
+            <div class="vd-box vd-ptr">Pointer <span class="vd-val">ptr</span></div>
+          </div>
+        </div>
+
+        <div class="mode-card" data-mode="steps">
+          <div class="mode-header">
+            <span class="mode-icon">◳</span>
+            <span class="mode-label">Step-by-step</span>
+          </div>
+          <ol class="steps-list">
+            <li>Create a variable — it gets stored somewhere in memory.</li>
+            <li>That memory location has a unique address.</li>
+            <li>A pointer is a variable that holds that address.</li>
+            <li>Through the pointer, you can reach the original variable.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="demo-cta">
+        <p class="demo-cta-text">Didn't understand one of those? That's exactly what the app is for.</p>
+        <a href="learn.html" class="btn btn-primary">Try it with your own material →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how">
+    <div class="container">
+      <p class="section-label">How it works</p>
+      <h2 class="section-heading">Three steps to understanding.</h2>
+
+      <div class="steps-flow">
+        <div class="flow-step">
+          <span class="flow-num">1</span>
+          <div class="flow-content">
+            <h3>Paste your material</h3>
+            <p>Paste a paragraph, a definition, or any concept you're struggling with.</p>
+          </div>
+        </div>
+        <div class="flow-divider">↓</div>
+        <div class="flow-step">
+          <span class="flow-num">2</span>
+          <div class="flow-content">
+            <h3>Choose how you want it explained</h3>
+            <p>Simple language, an analogy, a visual diagram, or step-by-step breakdown.</p>
+          </div>
+        </div>
+        <div class="flow-divider">↓</div>
+        <div class="flow-step">
+          <span class="flow-num">3</span>
+          <div class="flow-content">
+            <h3>Still not clear? Try another way.</h3>
+            <p>Hit "Explain it differently" and the same concept is explained in a completely different way — until it clicks.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="final-cta">
+    <div class="container">
+      <h2 class="final-heading">Ready to understand?</h2>
+      <a href="learn.html" class="btn btn-primary btn-large">Start Learning</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <p>Built for the Suvidha AI Hackathon 2026 · <span class="footer-brand">Learn Your Way</span></p>
+    </div>
+  </footer>
+
+  <script>
+    // Theme toggle
+    const html = document.documentElement;
+    const toggle = document.getElementById('themeToggle');
+    const icon = document.getElementById('themeIcon');
+
+    const saved = localStorage.getItem('lyw-theme') || 'dark';
+    html.setAttribute('data-theme', saved);
+    icon.textContent = saved === 'dark' ? '☀' : '☾';
+
+    toggle.addEventListener('click', () => {
+      const current = html.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('lyw-theme', next);
+      icon.textContent = next === 'dark' ? '☀' : '☾';
+    });
+  </script>
+
+</body>
+</html>
+
