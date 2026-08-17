@@ -113,6 +113,31 @@
     showSection(modeSection);
   });
 
+  document.getElementById("pdfBtn").addEventListener("click", () => document.getElementById("pdfUpload").click());
+
+  document.getElementById("pdfUpload").addEventListener("change", async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    e.target.value = "";
+    if (!file) return;
+    const formData = new FormData();
+    formData.append("file", file);
+    continueBtn.textContent = "Extracting PDF...";
+    continueBtn.disabled = true;
+    try {
+      const res = await fetch("http://localhost:5000/api/pdf", { method: "POST", body: formData });
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      materialInput.value = data.text;
+      continueBtn.textContent = "Continue →";
+      continueBtn.disabled = false;
+    } catch (err) {
+      alert("PDF error: " + err.message);
+      continueBtn.textContent = "Continue →";
+      continueBtn.disabled = false;
+    }
+  });
+
   demoBtn.addEventListener('click', () => {
     currentMaterial = DEMO_MATERIAL;
     isDemo = true;

@@ -613,8 +613,8 @@
   margin-bottom: 8px;
 }
 
-.result-status.correct { color: var(--text-secondary); }
-.result-status.incorrect { color: var(--text-tertiary); }
+.result-status.correct { color: #4caf50; }
+.result-status.incorrect { color: #e53935; }
 
 .result-q {
   font-size: 0.88rem;

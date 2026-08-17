@@ -48,5 +48,45 @@ def chat():
         response.headers['Access-Control-Allow-Origin'] = '*'
         return response, 500
 
+@app.route('/api/pdf', methods=['POST', 'OPTIONS'])
+def extract_pdf():
+    if request.method == 'OPTIONS':
+        response = jsonify({})
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+        response.headers['Access-Control-Allow-Methods'] = 'POST, OPTIONS'
+        return response
+
+    if 'file' not in request.files:
+        response = jsonify({'error': 'No file uploaded'})
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        return response, 400
+
+    file = request.files['file']
+    if not file.filename.endswith('.pdf'):
+        response = jsonify({'error': 'Only PDF files are supported'})
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        return response, 400
+
+    try:
+        from pypdf import PdfReader
+        import io
+        reader = PdfReader(io.BytesIO(file.read()))
+        text = ''
+        for page in reader.pages:
+            text += page.extract_text() + '\n'
+        text = text.strip()
+        if not text:
+            response = jsonify({'error': 'Could not extract text from this PDF'})
+            response.headers['Access-Control-Allow-Origin'] = '*'
+            return response, 400
+        response = jsonify({'text': text[:3000]})
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        return response
+    except Exception as e:
+        response = jsonify({'error': str(e)})
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        return response, 500
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=False)
