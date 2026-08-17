@@ -208,6 +208,7 @@
     }
     explanationOutput.classList.remove('hidden');
     showRethink(mode);
+    saveToHistory(currentMaterial, currentMode, currentLang);
     highlightKeyTerms();
   }
 
@@ -264,6 +265,7 @@
     }
     explanationOutput.classList.remove('hidden');
     showRethink(mode);
+    saveToHistory(currentMaterial, currentMode, currentLang);
     highlightKeyTerms();
   }
 
@@ -561,6 +563,66 @@
       .replace(/\*(.+?)\*/g, "<em>$1</em>")
       .replace(/`(.+?)`/g, "<code>$1</code>");
   }
+
+  // History
+  const HISTORY_KEY = "lyw-history";
+
+  function saveToHistory(material, mode, lang) {
+    const history = getHistory();
+    const item = { material, mode, lang, date: Date.now() };
+    history.unshift(item);
+    const trimmed = history.slice(0, 3);
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(trimmed));
+  }
+
+  function getHistory() {
+    try { return JSON.parse(localStorage.getItem(HISTORY_KEY) || "[]"); }
+    catch(e) { return []; }
+  }
+
+  function renderHistory() {
+    const history = getHistory();
+    const list = document.getElementById("historyList");
+    list.innerHTML = "";
+    if (!history.length) {
+      list.innerHTML = "<div class=\"history-empty\">No history yet.</div>";
+      return;
+    }
+    const MODE_ICONS = { simple: "◎", analogy: "◈", visual: "◱", steps: "◳" };
+    history.forEach((item, i) => {
+      const btn = document.createElement("button");
+      btn.className = "history-item";
+      btn.type = "button";
+      btn.innerHTML = "<div class=\"history-item-mode\">" + (MODE_ICONS[item.mode] || "") + " " + item.mode + " · " + (item.lang || "English") + "</div><div class=\"history-item-text\">" + item.material.slice(0, 120) + "...</div>";
+      btn.addEventListener("click", () => {
+        materialInput.value = item.material;
+        currentLang = item.lang || "English";
+        document.querySelectorAll(".lang-btn").forEach(b => {
+          b.classList.toggle("active", b.dataset.lang === currentLang);
+        });
+        document.getElementById("historyPanel").classList.add("hidden");
+        currentMaterial = item.material;
+        isDemo = false;
+        materialPreview.textContent = item.material;
+        showSection(modeSection);
+      });
+      list.appendChild(btn);
+    });
+  }
+
+  document.getElementById("historyBtn").addEventListener("click", () => {
+    renderHistory();
+    document.getElementById("historyPanel").classList.remove("hidden");
+  });
+
+  document.getElementById("historyClose").addEventListener("click", () => {
+    document.getElementById("historyPanel").classList.add("hidden");
+  });
+
+  document.getElementById("historyClearBtn").addEventListener("click", () => {
+    localStorage.removeItem(HISTORY_KEY);
+    renderHistory();
+  });
 
   function delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
