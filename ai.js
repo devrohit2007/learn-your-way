@@ -1,7 +1,7 @@
 const AI = (() => {
 
   const CONFIG = {
-    API_KEY: '      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',
+    API_KEY: 'YOUR_NVIDIA_API_KEY_HERE',
     MODEL: 'nvidia/nemotron-3-ultra-550b-a55b',
     MAX_TOKENS: 800
   };
