@@ -89,3 +89,30 @@ const DEMO_PRACTICE = [
   }
 ];
 
+
+const DEMO_QUIZ = [
+  {
+    question: 'Which of the following correctly declares a pointer to an integer in C?',
+    options: ['int ptr;', 'int &ptr;', 'int *ptr;', 'pointer int ptr;'],
+    correct: 2,
+    explanation: 'In C, the * symbol before the variable name declares it as a pointer. So int *ptr; declares a pointer to an integer.'
+  },
+  {
+    question: 'What happens when you dereference a NULL pointer?',
+    options: ['You get the value 0', 'You get an empty string', 'The program crashes or causes undefined behaviour', 'You get the address 0x0000'],
+    correct: 2,
+    explanation: 'Dereferencing a NULL pointer means trying to access memory at address 0, which is not valid. This causes a segmentation fault or undefined behaviour.'
+  },
+  {
+    question: 'If int x = 10 and int *ptr = &x, what is the value of *ptr?',
+    options: ['The address of x', '10', '&x', 'ptr'],
+    correct: 1,
+    explanation: '*ptr dereferences the pointer, which means go to the address stored in ptr and read what is there. Since ptr holds the address of x, *ptr gives you x value: 10.'
+  },
+  {
+    question: 'What does the & operator do when used with a variable?',
+    options: ['It doubles the variable value', 'It returns the variable memory address', 'It creates a copy of the variable', 'It deletes the variable from memory'],
+    correct: 1,
+    explanation: 'The & address-of operator returns the memory address where a variable is stored, not its value.'
+  }
+];

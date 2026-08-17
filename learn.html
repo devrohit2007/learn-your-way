@@ -90,13 +90,11 @@
     <section class="ws-section hidden" id="explanationSection">
       <div class="ws-container">
 
-        <!-- Mode indicator -->
         <div class="active-mode-bar" id="activeModeBar">
           <span class="active-mode-icon" id="activeModeIcon"></span>
           <span class="active-mode-label" id="activeModeLabel"></span>
         </div>
 
-        <!-- Loading state -->
         <div class="loading-state hidden" id="loadingState">
           <div class="loading-dots">
             <span></span><span></span><span></span>
@@ -104,11 +102,8 @@
           <p class="loading-text" id="loadingText">Understanding your material...</p>
         </div>
 
-        <!-- Explanation output -->
         <div class="explanation-output hidden" id="explanationOutput">
           <div class="explanation-content" id="explanationContent"></div>
-
-          <!-- Listen button -->
           <div class="listen-bar">
             <button class="btn-listen" id="listenBtn" type="button" aria-label="Listen to explanation">
               <span id="listenIcon">🔊</span>
@@ -117,14 +112,12 @@
           </div>
         </div>
 
-        <!-- Error state -->
         <div class="error-state hidden" id="errorState">
           <p class="error-icon">⚠</p>
           <p class="error-message" id="errorMessage">Something went wrong.</p>
           <button class="btn btn-secondary btn-sm" id="retryBtn" type="button">Try again</button>
         </div>
 
-        <!-- Didn't understand? -->
         <div class="rethink-section hidden" id="rethinkSection">
           <p class="rethink-label">Didn't quite get it?</p>
           <div class="rethink-buttons" role="group" aria-label="Try a different explanation">
@@ -143,7 +136,6 @@
           </div>
         </div>
 
-        <!-- Bottom actions -->
         <div class="bottom-actions hidden" id="bottomActions">
           <button class="btn btn-ghost btn-sm" id="backToModeBtn" type="button">
             ← Try another mode
@@ -163,9 +155,7 @@
         <p class="ws-sub-sm">Answer these to check your understanding.</p>
 
         <div id="practiceLoading" class="loading-state">
-          <div class="loading-dots">
-            <span></span><span></span><span></span>
-          </div>
+          <div class="loading-dots"><span></span><span></span><span></span></div>
           <p class="loading-text">Preparing practice questions...</p>
         </div>
 
@@ -181,9 +171,78 @@
           <button class="btn btn-ghost btn-sm" id="backToExplainBtn" type="button">
             ← Back to explanation
           </button>
-          <button class="btn btn-primary" id="quizBtn" type="button">
+          <button class="btn btn-primary" id="toQuizBtn" type="button">
             Take the quiz →
           </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- STEP 5: QUIZ -->
+    <section class="ws-section hidden" id="quizSection">
+      <div class="ws-container">
+
+        <!-- Quiz intro -->
+        <div id="quizIntro">
+          <h2 class="ws-heading-sm">Quiz</h2>
+          <p class="ws-sub-sm">Four questions. No time limit. Take your time.</p>
+          <button class="btn btn-primary" id="startQuizBtn" type="button">Start quiz →</button>
+        </div>
+
+        <!-- Quiz questions -->
+        <div id="quizLoading" class="loading-state hidden">
+          <div class="loading-dots"><span></span><span></span><span></span></div>
+          <p class="loading-text">Preparing your quiz...</p>
+        </div>
+
+        <div id="quizQuestions" class="practice-questions hidden"></div>
+
+        <div class="practice-actions hidden" id="quizActions">
+          <button class="btn btn-primary" id="submitQuizBtn" type="button">Submit quiz</button>
+        </div>
+
+        <!-- Quiz results -->
+        <div id="quizResults" class="hidden">
+
+          <!-- Score card -->
+          <div class="quiz-score-card" id="quizScoreCard"></div>
+
+          <!-- Per-question results -->
+          <div id="quizResultItems" class="practice-results"></div>
+
+          <!-- If any wrong: offer re-explanation -->
+          <div id="quizRethink" class="hidden">
+            <div class="rethink-section">
+              <p class="rethink-label">Still unclear on some answers?</p>
+              <p class="quiz-rethink-sub">Go back and have the concept explained a different way.</p>
+              <div class="rethink-buttons" role="group" aria-label="Try a different explanation">
+                <button class="rethink-btn" data-mode="simple" type="button">
+                  <span class="rethink-icon">◎</span> Explain it simpler
+                </button>
+                <button class="rethink-btn" data-mode="analogy" type="button">
+                  <span class="rethink-icon">◈</span> Use an analogy
+                </button>
+                <button class="rethink-btn" data-mode="visual" type="button">
+                  <span class="rethink-icon">◱</span> Show me visually
+                </button>
+                <button class="rethink-btn" data-mode="steps" type="button">
+                  <span class="rethink-icon">◳</span> Break it into steps
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Final nav -->
+          <div class="practice-nav">
+            <button class="btn btn-ghost btn-sm" id="backToPracticeBtn" type="button">
+              ← Back to practice
+            </button>
+            <button class="btn btn-primary" id="startOverBtn" type="button">
+              Start over
+            </button>
+          </div>
+
         </div>
 
       </div>

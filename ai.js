@@ -102,6 +102,12 @@ correct is the 0-based index of the right answer.`;
     return JSON.parse(clean);
   }
 
-  return { explain, generatePractice };
+  async function generateQuiz(text, mode) {
+    const raw = await callAPI(QUIZ_PROMPT(text, mode));
+    const clean = raw.replace(/```json|```/g, '').trim();
+    return JSON.parse(clean);
+  }
+
+  return { explain, generatePractice, generateQuiz };
 
 })();

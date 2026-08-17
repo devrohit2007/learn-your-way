@@ -2,10 +2,10 @@
 
 (() => {
 
-  // ── Theme ────────────────────────────────────────────────
+  // Theme
   const html = document.documentElement;
   const themeToggle = document.getElementById('themeToggle');
-  const themeIcon = document.getElementById('themeIcon');
+  const themeIcon   = document.getElementById('themeIcon');
 
   const savedTheme = localStorage.getItem('lyw-theme') || 'dark';
   html.setAttribute('data-theme', savedTheme);
@@ -19,44 +19,47 @@
     themeIcon.textContent = next === 'dark' ? '☀' : '☾';
   });
 
-  // ── State ────────────────────────────────────────────────
-  let currentMaterial = '';
-  let currentMode = '';
+  // State
+  let currentMaterial        = '';
+  let currentMode            = '';
   let currentExplanationText = '';
-  let speechUtterance = null;
-  let isSpeaking = false;
-  let practiceData = [];
-  let userAnswers = [];
-  let isDemo = false;
+  let isSpeaking             = false;
+  let practiceData           = [];
+  let practiceAnswers        = [];
+  let quizData               = [];
+  let quizAnswers            = [];
+  let isDemo                 = false;
 
-  // ── Elements ─────────────────────────────────────────────
-  const inputSection      = document.getElementById('inputSection');
-  const modeSection       = document.getElementById('modeSection');
+  // Elements
+  const inputSection       = document.getElementById('inputSection');
+  const modeSection        = document.getElementById('modeSection');
   const explanationSection = document.getElementById('explanationSection');
-  const practiceSection   = document.getElementById('practiceSection');
+  const practiceSection    = document.getElementById('practiceSection');
+  const quizSection        = document.getElementById('quizSection');
+  const ALL_SECTIONS = [inputSection, modeSection, explanationSection, practiceSection, quizSection];
 
-  const materialInput     = document.getElementById('materialInput');
-  const materialPreview   = document.getElementById('materialPreview');
-  const continueBtn       = document.getElementById('continueBtn');
-  const demoBtn           = document.getElementById('demoBtn');
-  const backToInputBtn    = document.getElementById('backToInputBtn');
+  const materialInput   = document.getElementById('materialInput');
+  const materialPreview = document.getElementById('materialPreview');
+  const continueBtn     = document.getElementById('continueBtn');
+  const demoBtn         = document.getElementById('demoBtn');
+  const backToInputBtn  = document.getElementById('backToInputBtn');
 
-  const activeModeIcon    = document.getElementById('activeModeIcon');
-  const activeModeLabel   = document.getElementById('activeModeLabel');
-  const loadingState      = document.getElementById('loadingState');
-  const loadingText       = document.getElementById('loadingText');
-  const explanationOutput = document.getElementById('explanationOutput');
+  const activeModeIcon     = document.getElementById('activeModeIcon');
+  const activeModeLabel    = document.getElementById('activeModeLabel');
+  const loadingState       = document.getElementById('loadingState');
+  const loadingText        = document.getElementById('loadingText');
+  const explanationOutput  = document.getElementById('explanationOutput');
   const explanationContent = document.getElementById('explanationContent');
-  const errorState        = document.getElementById('errorState');
-  const errorMessage      = document.getElementById('errorMessage');
-  const retryBtn          = document.getElementById('retryBtn');
-  const rethinkSection    = document.getElementById('rethinkSection');
-  const bottomActions     = document.getElementById('bottomActions');
-  const backToModeBtn     = document.getElementById('backToModeBtn');
-  const practiceBtn       = document.getElementById('practiceBtn');
-  const listenBtn         = document.getElementById('listenBtn');
-  const listenIcon        = document.getElementById('listenIcon');
-  const listenLabel       = document.getElementById('listenLabel');
+  const errorState         = document.getElementById('errorState');
+  const errorMessage       = document.getElementById('errorMessage');
+  const retryBtn           = document.getElementById('retryBtn');
+  const rethinkSection     = document.getElementById('rethinkSection');
+  const bottomActions      = document.getElementById('bottomActions');
+  const backToModeBtn      = document.getElementById('backToModeBtn');
+  const practiceBtn        = document.getElementById('practiceBtn');
+  const listenBtn          = document.getElementById('listenBtn');
+  const listenIcon         = document.getElementById('listenIcon');
+  const listenLabel        = document.getElementById('listenLabel');
 
   const practiceLoading   = document.getElementById('practiceLoading');
   const practiceQuestions = document.getElementById('practiceQuestions');
@@ -65,7 +68,20 @@
   const practiceResults   = document.getElementById('practiceResults');
   const practiceNav       = document.getElementById('practiceNav');
   const backToExplainBtn  = document.getElementById('backToExplainBtn');
-  const quizBtn           = document.getElementById('quizBtn');
+  const toQuizBtn         = document.getElementById('toQuizBtn');
+
+  const quizIntro         = document.getElementById('quizIntro');
+  const startQuizBtn      = document.getElementById('startQuizBtn');
+  const quizLoading       = document.getElementById('quizLoading');
+  const quizQuestions     = document.getElementById('quizQuestions');
+  const quizActions       = document.getElementById('quizActions');
+  const submitQuizBtn     = document.getElementById('submitQuizBtn');
+  const quizResults       = document.getElementById('quizResults');
+  const quizScoreCard     = document.getElementById('quizScoreCard');
+  const quizResultItems   = document.getElementById('quizResultItems');
+  const quizRethink       = document.getElementById('quizRethink');
+  const backToPracticeBtn = document.getElementById('backToPracticeBtn');
+  const startOverBtn      = document.getElementById('startOverBtn');
 
   const MODE_META = {
     simple:  { icon: '◎', label: 'Simple' },
@@ -73,22 +89,22 @@
     visual:  { icon: '◱', label: 'Visual' },
     steps:   { icon: '◳', label: 'Step-by-step' }
   };
+  const LETTERS = ['A', 'B', 'C', 'D'];
 
-  // ── Section navigation ──────────────────────────────────
+  // Section navigation
   function showSection(section) {
-    [inputSection, modeSection, explanationSection, practiceSection]
-      .forEach(s => s.classList.add('hidden'));
+    ALL_SECTIONS.forEach(s => s.classList.add('hidden'));
     section.classList.remove('hidden');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // ── Step 1 → Step 2 ─────────────────────────────────────
+  // Step 1: Input
   continueBtn.addEventListener('click', () => {
     const text = materialInput.value.trim();
     if (!text) {
       materialInput.focus();
       materialInput.style.borderColor = 'var(--text-tertiary)';
-      setTimeout(() => materialInput.style.borderColor = '', 1200);
+      setTimeout(() => { materialInput.style.borderColor = ''; }, 1200);
       return;
     }
     currentMaterial = text;
@@ -105,63 +121,44 @@
     showSection(modeSection);
   });
 
-  backToInputBtn.addEventListener('click', () => {
-    showSection(inputSection);
-  });
+  backToInputBtn.addEventListener('click', () => showSection(inputSection));
 
-  // ── Step 2 → Step 3 ─────────────────────────────────────
+  // Step 2: Mode
   document.querySelectorAll('.mode-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const mode = btn.dataset.mode;
-      startExplanation(mode);
-    });
+    btn.addEventListener('click', () => startExplanation(btn.dataset.mode));
   });
 
+  // Step 3: Explanation
   async function startExplanation(mode) {
     currentMode = mode;
     stopSpeech();
-
     const meta = MODE_META[mode];
-    activeModeIcon.textContent = meta.icon;
+    activeModeIcon.textContent  = meta.icon;
     activeModeLabel.textContent = meta.label;
-
-    // Reset explanation section state
     loadingState.classList.remove('hidden');
     explanationOutput.classList.add('hidden');
     errorState.classList.add('hidden');
     rethinkSection.classList.add('hidden');
     bottomActions.classList.add('hidden');
     explanationContent.innerHTML = '';
-
     showSection(explanationSection);
-
     try {
       if (isDemo) {
-        // Use built-in demo — no API needed
-        await simulateDelay(900);
-        const demo = DEMO_EXPLANATIONS[mode];
-        renderExplanation(demo, mode);
+        await delay(900);
+        renderExplanation(DEMO_EXPLANATIONS[mode], mode);
       } else {
-        // Use AI API
         loadingText.textContent = 'Understanding your material...';
         const raw = await AI.explain(currentMaterial, mode);
         renderAIExplanation(raw, mode);
       }
     } catch (err) {
-      showError(err, mode);
+      showError(err);
     }
   }
 
   function renderExplanation(demo, mode) {
     loadingState.classList.add('hidden');
-
-    if (demo.type === 'text') {
-      explanationContent.innerHTML = demo.content;
-      currentExplanationText = explanationContent.textContent;
-    } else if (demo.type === 'visual') {
-      explanationContent.innerHTML = demo.content;
-      currentExplanationText = explanationContent.textContent;
-    } else if (demo.type === 'steps') {
+    if (demo.type === 'steps') {
       const ol = document.createElement('ol');
       ol.className = 'ai-steps';
       demo.content.forEach(step => {
@@ -171,8 +168,10 @@
       });
       explanationContent.appendChild(ol);
       currentExplanationText = demo.content.join('. ');
+    } else {
+      explanationContent.innerHTML = demo.content;
+      currentExplanationText = explanationContent.textContent;
     }
-
     explanationOutput.classList.remove('hidden');
     showRethink(mode);
   }
@@ -180,9 +179,7 @@
   function renderAIExplanation(text, mode) {
     loadingState.classList.add('hidden');
     currentExplanationText = text;
-
     if (mode === 'steps') {
-      // Parse numbered list from AI
       const lines = text.split('\n').filter(l => l.trim());
       const ol = document.createElement('ol');
       ol.className = 'ai-steps';
@@ -194,152 +191,108 @@
           ol.appendChild(li);
         }
       });
-      if (ol.children.length > 0) {
+      if (ol.children.length) {
         explanationContent.appendChild(ol);
       } else {
-        explanationContent.innerHTML = `<p>${text}</p>`;
+        explanationContent.innerHTML = '<p>' + text + '</p>';
       }
     } else if (mode === 'visual') {
-      // Parse diagram lines from AI
       const lines = text.split('\n').filter(l => l.trim());
       const diagram = document.createElement('div');
       diagram.className = 'ai-diagram';
       let hasArrow = false;
-
       lines.forEach(line => {
-        if (line.match(/[↓↑→←]/)) {
+        if (/[↓↑→←]/.test(line)) {
           const arrow = document.createElement('div');
           arrow.className = 'ai-diagram-arrow';
           arrow.textContent = line.trim();
           diagram.appendChild(arrow);
           hasArrow = true;
-        } else if (line.trim()) {
+        } else {
           const box = document.createElement('div');
           box.className = 'ai-diagram-box';
           box.textContent = line.trim();
           diagram.appendChild(box);
         }
       });
-
       if (hasArrow) {
         explanationContent.appendChild(diagram);
       } else {
-        // Fallback: render as text
-        explanationContent.innerHTML = `<p>${text}</p>`;
+        explanationContent.innerHTML = '<p>' + text + '</p>';
       }
     } else {
-      // Simple / Analogy: render as paragraphs
-      const paragraphs = text.split('\n\n').filter(p => p.trim());
-      paragraphs.forEach(para => {
+      text.split('\n\n').filter(p => p.trim()).forEach(para => {
         const p = document.createElement('p');
         p.textContent = para.trim();
         explanationContent.appendChild(p);
       });
     }
-
     explanationOutput.classList.remove('hidden');
     showRethink(mode);
   }
 
-  function showRethink(currentMode) {
-    // Hide the rethink button for the current mode
+  function showRethink(activeMode) {
     document.querySelectorAll('.rethink-btn').forEach(btn => {
-      btn.style.display = btn.dataset.mode === currentMode ? 'none' : '';
+      btn.style.display = btn.dataset.mode === activeMode ? 'none' : '';
     });
     rethinkSection.classList.remove('hidden');
     bottomActions.classList.remove('hidden');
   }
 
-  function showError(err, mode) {
+  function showError(err) {
     loadingState.classList.add('hidden');
     explanationOutput.classList.add('hidden');
-
     let message = 'Something went wrong. Please try again.';
-
     if (err.message === 'NO_API_KEY') {
-      message = 'No API key is set. Try the built-in demo to see how it works — press the back button and select "Try the built-in demo".';
+      message = 'No API key set. Use the built-in demo to see how it works.';
     } else if (err.message.includes('fetch') || err.message.includes('network')) {
       message = 'Network error. Check your connection and try again.';
     } else if (err.message) {
       message = err.message;
     }
-
     errorMessage.textContent = message;
     errorState.classList.remove('hidden');
   }
 
-  retryBtn.addEventListener('click', () => {
-    if (currentMode) startExplanation(currentMode);
-  });
+  retryBtn.addEventListener('click', () => { if (currentMode) startExplanation(currentMode); });
 
-  // ── Rethink buttons ─────────────────────────────────────
   document.querySelectorAll('.rethink-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const mode = btn.dataset.mode;
-      stopSpeech();
-      startExplanation(mode);
-    });
+    btn.addEventListener('click', () => { stopSpeech(); startExplanation(btn.dataset.mode); });
   });
 
-  // ── Back buttons ─────────────────────────────────────────
-  backToModeBtn.addEventListener('click', () => {
-    stopSpeech();
-    showSection(modeSection);
-  });
+  backToModeBtn.addEventListener('click', () => { stopSpeech(); showSection(modeSection); });
 
-  // ── Listen (Web Speech API) ──────────────────────────────
+  // Listen
   listenBtn.addEventListener('click', () => {
-    if (!('speechSynthesis' in window)) {
-      listenLabel.textContent = 'Not supported';
-      return;
-    }
-
-    if (isSpeaking) {
-      stopSpeech();
-      return;
-    }
-
+    if (!('speechSynthesis' in window)) { listenLabel.textContent = 'Not supported'; return; }
+    if (isSpeaking) { stopSpeech(); return; }
     if (!currentExplanationText) return;
-
-    speechUtterance = new SpeechSynthesisUtterance(currentExplanationText);
-    speechUtterance.rate = 0.95;
-    speechUtterance.pitch = 1;
-
-    speechUtterance.onstart = () => {
+    const utterance = new SpeechSynthesisUtterance(currentExplanationText);
+    utterance.rate = 0.95;
+    utterance.onstart = () => {
       isSpeaking = true;
       listenIcon.textContent = '⏹';
       listenLabel.textContent = 'Stop';
       listenBtn.classList.add('listening');
     };
-
-    speechUtterance.onend = () => {
+    utterance.onend = utterance.onerror = () => {
       isSpeaking = false;
       listenIcon.textContent = '🔊';
       listenLabel.textContent = 'Listen';
       listenBtn.classList.remove('listening');
     };
-
-    speechUtterance.onerror = () => {
-      isSpeaking = false;
-      listenIcon.textContent = '🔊';
-      listenLabel.textContent = 'Listen';
-      listenBtn.classList.remove('listening');
-    };
-
-    window.speechSynthesis.speak(speechUtterance);
+    window.speechSynthesis.speak(utterance);
   });
 
   function stopSpeech() {
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-    }
+    if ('speechSynthesis' in window) window.speechSynthesis.cancel();
     isSpeaking = false;
-    if (listenIcon) listenIcon.textContent = '🔊';
+    if (listenIcon)  listenIcon.textContent  = '🔊';
     if (listenLabel) listenLabel.textContent = 'Listen';
-    if (listenBtn) listenBtn.classList.remove('listening');
+    if (listenBtn)   listenBtn.classList.remove('listening');
   }
 
-  // ── Step 3 → Step 4: Practice ───────────────────────────
+  // Step 4: Practice
   practiceBtn.addEventListener('click', async () => {
     stopSpeech();
     showSection(practiceSection);
@@ -350,154 +303,201 @@
     practiceLoading.classList.remove('hidden');
     practiceQuestions.innerHTML = '';
     practiceResults.innerHTML = '';
-    userAnswers = [];
-
+    practiceAnswers = [];
     try {
       if (isDemo) {
-        await simulateDelay(800);
+        await delay(800);
         practiceData = DEMO_PRACTICE;
       } else {
         practiceData = await AI.generatePractice(currentMaterial, currentMode);
       }
-      renderPracticeQuestions(practiceData);
+      renderQuestions(practiceData, practiceQuestions, practiceAnswers, () => {
+        const ready = practiceAnswers.every(a => a !== null);
+        checkAnswersBtn.disabled = !ready;
+        checkAnswersBtn.style.opacity = ready ? '1' : '0.5';
+      });
+      practiceLoading.classList.add('hidden');
+      practiceQuestions.classList.remove('hidden');
+      practiceActions.classList.remove('hidden');
+      checkAnswersBtn.disabled = true;
+      checkAnswersBtn.style.opacity = '0.5';
     } catch (err) {
       practiceLoading.classList.add('hidden');
-      practiceQuestions.innerHTML = `<p style="color:var(--text-secondary);font-size:0.9rem;">Could not generate practice questions. ${err.message === 'NO_API_KEY' ? 'Try the demo mode.' : 'Please try again.'}</p>`;
+      practiceQuestions.innerHTML = '<p style="color:var(--text-secondary);font-size:0.9rem;">Could not generate questions. ' + (err.message === 'NO_API_KEY' ? 'Try the demo mode.' : 'Please try again.') + '</p>';
       practiceQuestions.classList.remove('hidden');
     }
   });
 
-  function renderPracticeQuestions(questions) {
-    practiceLoading.classList.add('hidden');
-    practiceQuestions.innerHTML = '';
-    userAnswers = new Array(questions.length).fill(null);
+  checkAnswersBtn.addEventListener('click', () => {
+    lockOptions(practiceQuestions);
+    renderResults(practiceData, practiceAnswers, practiceResults, false);
+    practiceActions.classList.add('hidden');
+    practiceResults.classList.remove('hidden');
+    practiceNav.classList.remove('hidden');
+  });
 
+  backToExplainBtn.addEventListener('click', () => { stopSpeech(); showSection(explanationSection); });
+
+  // Step 5: Quiz
+  toQuizBtn.addEventListener('click', () => {
+    showSection(quizSection);
+    quizIntro.classList.remove('hidden');
+    quizLoading.classList.add('hidden');
+    quizQuestions.classList.add('hidden');
+    quizActions.classList.add('hidden');
+    quizResults.classList.add('hidden');
+    quizQuestions.innerHTML = '';
+    quizResultItems.innerHTML = '';
+    quizAnswers = [];
+  });
+
+  startQuizBtn.addEventListener('click', async () => {
+    quizIntro.classList.add('hidden');
+    quizLoading.classList.remove('hidden');
+    try {
+      if (isDemo) {
+        await delay(900);
+        quizData = DEMO_QUIZ;
+      } else {
+        quizData = await AI.generateQuiz(currentMaterial, currentMode);
+      }
+      renderQuestions(quizData, quizQuestions, quizAnswers, () => {
+        const ready = quizAnswers.every(a => a !== null);
+        submitQuizBtn.disabled = !ready;
+        submitQuizBtn.style.opacity = ready ? '1' : '0.5';
+      });
+      quizLoading.classList.add('hidden');
+      quizQuestions.classList.remove('hidden');
+      quizActions.classList.remove('hidden');
+      submitQuizBtn.disabled = true;
+      submitQuizBtn.style.opacity = '0.5';
+    } catch (err) {
+      quizLoading.classList.add('hidden');
+      quizIntro.innerHTML = '<p style="color:var(--text-secondary);font-size:0.9rem;margin-bottom:16px;">Could not generate quiz. ' + (err.message === 'NO_API_KEY' ? 'Try the demo mode.' : 'Please try again.') + '</p><button class="btn btn-ghost btn-sm" onclick="location.reload()">Start over</button>';
+      quizIntro.classList.remove('hidden');
+    }
+  });
+
+  submitQuizBtn.addEventListener('click', () => {
+    lockOptions(quizQuestions);
+    quizActions.classList.add('hidden');
+    quizQuestions.classList.add('hidden');
+    const correct = renderResults(quizData, quizAnswers, quizResultItems, true);
+    const total   = quizData.length;
+    const pct     = Math.round((correct / total) * 100);
+    let grade, msg;
+    if (pct === 100)    { grade = 'Perfect';       msg = 'You nailed it.'; }
+    else if (pct >= 75) { grade = 'Good';           msg = 'Solid understanding.'; }
+    else if (pct >= 50) { grade = 'Getting there';  msg = 'A few things to revisit.'; }
+    else                { grade = 'Keep going';     msg = 'Try a different explanation style.'; }
+    quizScoreCard.innerHTML =
+      '<div class="quiz-score-number">' + correct + '/' + total + '</div>' +
+      '<div class="quiz-score-grade">'  + grade   + '</div>' +
+      '<div class="quiz-score-msg">'    + msg      + '</div>';
+    quizResults.classList.remove('hidden');
+    if (correct < total) {
+      quizRethink.classList.remove('hidden');
+    } else {
+      quizRethink.classList.add('hidden');
+    }
+  });
+
+  document.querySelectorAll('#quizRethink .rethink-btn').forEach(btn => {
+    btn.addEventListener('click', () => { stopSpeech(); startExplanation(btn.dataset.mode); });
+  });
+
+  backToPracticeBtn.addEventListener('click', () => showSection(practiceSection));
+
+  startOverBtn.addEventListener('click', () => {
+    stopSpeech();
+    materialInput.value = '';
+    currentMaterial = '';
+    currentMode     = '';
+    isDemo          = false;
+    showSection(inputSection);
+  });
+
+  // Shared: render questions
+  function renderQuestions(questions, container, answersArr, onAnswer) {
+    container.innerHTML = '';
     questions.forEach((q, i) => {
+      answersArr[i] = null;
       const card = document.createElement('div');
       card.className = 'practice-q';
-
       const num = document.createElement('div');
       num.className = 'practice-q-num';
-      num.textContent = `Question ${i + 1}`;
-
+      num.textContent = 'Question ' + (i + 1) + ' of ' + questions.length;
       const text = document.createElement('div');
       text.className = 'practice-q-text';
       text.textContent = q.question;
-
       card.appendChild(num);
       card.appendChild(text);
-
-      if (q.type === 'mc') {
-        const opts = document.createElement('div');
-        opts.className = 'mc-options';
-
-        const letters = ['A', 'B', 'C', 'D'];
-        q.options.forEach((opt, j) => {
-          const btn = document.createElement('button');
-          btn.className = 'mc-option';
-          btn.type = 'button';
-          btn.innerHTML = `<span class="mc-letter">${letters[j]}</span>${opt}`;
-          btn.addEventListener('click', () => {
-            // Deselect all in this group
-            opts.querySelectorAll('.mc-option').forEach(b => b.classList.remove('selected'));
-            btn.classList.add('selected');
-            userAnswers[i] = j;
-            checkSubmitReady();
-          });
-          opts.appendChild(btn);
+      const opts = document.createElement('div');
+      opts.className = 'mc-options';
+      q.options.forEach((opt, j) => {
+        const btn = document.createElement('button');
+        btn.className = 'mc-option';
+        btn.type = 'button';
+        btn.innerHTML = '<span class="mc-letter">' + LETTERS[j] + '</span>' + opt;
+        btn.addEventListener('click', () => {
+          opts.querySelectorAll('.mc-option').forEach(b => b.classList.remove('selected'));
+          btn.classList.add('selected');
+          answersArr[i] = j;
+          onAnswer();
         });
-
-        card.appendChild(opts);
-      }
-
-      practiceQuestions.appendChild(card);
+        opts.appendChild(btn);
+      });
+      card.appendChild(opts);
+      container.appendChild(card);
     });
-
-    practiceQuestions.classList.remove('hidden');
-    practiceActions.classList.remove('hidden');
   }
 
-  function checkSubmitReady() {
-    const allAnswered = userAnswers.every(a => a !== null);
-    checkAnswersBtn.disabled = !allAnswered;
-    checkAnswersBtn.style.opacity = allAnswered ? '1' : '0.5';
-  }
-
-  checkAnswersBtn.addEventListener('click', () => {
-    showPracticeResults();
-  });
-
-  function showPracticeResults() {
-    practiceActions.classList.add('hidden');
-
-    // Lock all options
-    document.querySelectorAll('.mc-option').forEach(btn => {
-      btn.style.pointerEvents = 'none';
-    });
-
-    practiceResults.innerHTML = '';
+  // Shared: render results
+  function renderResults(questions, answers, container, addFeedback) {
+    container.innerHTML = '';
     let correct = 0;
-
-    practiceData.forEach((q, i) => {
-      const userAns = userAnswers[i];
+    questions.forEach((q, i) => {
+      const userAns   = answers[i];
       const isCorrect = userAns === q.correct;
       if (isCorrect) correct++;
-
       const item = document.createElement('div');
       item.className = 'result-item';
-
       const status = document.createElement('div');
-      status.className = `result-status ${isCorrect ? 'correct' : 'incorrect'}`;
+      status.className = 'result-status ' + (isCorrect ? 'correct' : 'incorrect');
       status.textContent = isCorrect ? '✓ Correct' : '✗ Incorrect';
-
       const qText = document.createElement('div');
       qText.className = 'result-q';
       qText.textContent = q.question;
-
-      const letters = ['A', 'B', 'C', 'D'];
       const answerLine = document.createElement('div');
       answerLine.className = 'result-answer';
-
       if (isCorrect) {
-        answerLine.textContent = `Your answer: ${letters[userAns]} — ${q.options[userAns]}`;
+        answerLine.textContent = 'Your answer: ' + LETTERS[userAns] + ' — ' + q.options[userAns];
       } else {
-        answerLine.textContent = `Your answer: ${letters[userAns] || '?'} — Correct: ${letters[q.correct]} — ${q.options[q.correct]}`;
+        answerLine.textContent = 'Your answer: ' + (LETTERS[userAns] || '?') + ' · Correct: ' + LETTERS[q.correct] + ' — ' + q.options[q.correct];
       }
-
-      const exp = document.createElement('div');
-      exp.className = 'result-explanation';
-      exp.textContent = q.explanation;
-
       item.appendChild(status);
       item.appendChild(qText);
       item.appendChild(answerLine);
-      item.appendChild(exp);
-      practiceResults.appendChild(item);
+      if (addFeedback && q.explanation) {
+        const exp = document.createElement('div');
+        exp.className = 'result-explanation';
+        exp.textContent = q.explanation;
+        item.appendChild(exp);
+      }
+      container.appendChild(item);
     });
-
-    // Score summary
-    const summary = document.createElement('div');
-    summary.style.cssText = 'text-align:center;padding:20px 0 8px;font-size:0.95rem;color:var(--text-secondary);';
-    summary.textContent = `${correct} of ${practiceData.length} correct`;
-    practiceResults.insertBefore(summary, practiceResults.firstChild);
-
-    practiceResults.classList.remove('hidden');
-    practiceNav.classList.remove('hidden');
+    return correct;
   }
 
-  backToExplainBtn.addEventListener('click', () => {
-    stopSpeech();
-    showSection(explanationSection);
-  });
+  // Shared: lock options
+  function lockOptions(container) {
+    container.querySelectorAll('.mc-option').forEach(btn => {
+      btn.style.pointerEvents = 'none';
+    });
+  }
 
-  // Quiz button placeholder
-  quizBtn.addEventListener('click', () => {
-    quizBtn.textContent = 'Quiz coming soon...';
-    quizBtn.disabled = true;
-  });
-
-  // ── Utility ──────────────────────────────────────────────
-  function simulateDelay(ms) {
+  // Utility
+  function delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
