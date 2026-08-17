@@ -29,6 +29,7 @@
   let quizData               = [];
   let quizAnswers            = [];
   let isDemo                 = false;
+  let currentLang            = "English";
 
   // Elements
   const inputSection       = document.getElementById('inputSection');
@@ -146,6 +147,14 @@
     showSection(modeSection);
   });
 
+  document.querySelectorAll(".lang-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".lang-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      currentLang = btn.dataset.lang;
+    });
+  });
+
   backToInputBtn.addEventListener('click', () => showSection(inputSection));
 
   // Step 2: Mode
@@ -173,7 +182,7 @@
         renderExplanation(DEMO_EXPLANATIONS[mode], mode);
       } else {
         loadingText.textContent = 'Understanding your material...';
-        const raw = await AI.explain(currentMaterial, mode);
+        const raw = await AI.explain(currentMaterial, mode, currentLang);
         renderAIExplanation(raw, mode);
       }
     } catch (err) {
@@ -527,7 +536,7 @@
   async function highlightKeyTerms() {
     try {
       const terms = isDemo
-        ? ["chloroplast", "chlorophyll", "glucose", "photosynthesis", "carbon dioxide"]
+        ? ["pointer", "memory address", "variable", "dereference", "operator"]
         : await AI.getKeyTerms(currentExplanationText);
       if (!terms || !terms.length) return;
       const bar = document.createElement("div");

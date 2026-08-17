@@ -52,10 +52,11 @@ Explanation: ${text}`;
     return data.content;
   }
 
-  async function explain(text, mode) {
+  async function explain(text, mode, lang = "English") {
     const prompt = MODE_PROMPTS[mode];
     if (!prompt) throw new Error('Unknown mode: ' + mode);
-    return await callAPI(prompt(text));
+    const langNote = lang !== "English" ? `\n\nIMPORTANT: Respond entirely in ${lang}. Do not use English except for technical terms that have no translation.` : "";
+    return await callAPI(prompt(text) + langNote);
   }
 
   async function generatePractice(text, mode) {
