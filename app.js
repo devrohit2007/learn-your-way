@@ -202,7 +202,7 @@
       diagram.className = 'ai-diagram';
       let hasArrow = false;
       lines.forEach(line => {
-        if (/[↓↑→←]/.test(line)) {
+        if (/[↓↑→←▼▲]/.test(line)) {
           const arrow = document.createElement('div');
           arrow.className = 'ai-diagram-arrow';
           arrow.textContent = line.trim();
@@ -223,7 +223,7 @@
     } else {
       text.split('\n\n').filter(p => p.trim()).forEach(para => {
         const p = document.createElement('p');
-        p.textContent = para.trim();
+        p.innerHTML = mdToHtml(para.trim());
         explanationContent.appendChild(p);
       });
     }
@@ -497,6 +497,13 @@
   }
 
   // Utility
+  function mdToHtml(text) {
+    return text
+      .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+      .replace(/\*(.+?)\*/g, "<em>$1</em>")
+      .replace(/`(.+?)`/g, "<code>$1</code>");
+  }
+
   function delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
