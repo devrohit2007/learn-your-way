@@ -199,6 +199,7 @@
     }
     explanationOutput.classList.remove('hidden');
     showRethink(mode);
+    highlightKeyTerms();
   }
 
   function renderAIExplanation(text, mode) {
@@ -254,6 +255,7 @@
     }
     explanationOutput.classList.remove('hidden');
     showRethink(mode);
+    highlightKeyTerms();
   }
 
   function showRethink(activeMode) {
@@ -522,6 +524,28 @@
   }
 
   // Utility
+  async function highlightKeyTerms() {
+    try {
+      const terms = isDemo
+        ? ["chloroplast", "chlorophyll", "glucose", "photosynthesis", "carbon dioxide"]
+        : await AI.getKeyTerms(currentExplanationText);
+      if (!terms || !terms.length) return;
+      const bar = document.createElement("div");
+      bar.className = "key-terms-bar";
+      const label = document.createElement("div");
+      label.className = "key-terms-label";
+      label.textContent = "Key terms";
+      bar.appendChild(label);
+      terms.forEach(term => {
+        const chip = document.createElement("span");
+        chip.className = "key-term-chip";
+        chip.textContent = term;
+        bar.appendChild(chip);
+      });
+      explanationContent.appendChild(bar);
+    } catch(e) {}
+  }
+
   function mdToHtml(text) {
     return text
       .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")

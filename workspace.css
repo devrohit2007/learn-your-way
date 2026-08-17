@@ -646,3 +646,43 @@
   gap: 12px;
   padding-top: 8px;
 }
+
+/* --- Key term highlights ----------------------------------- */
+.key-term {
+  border-bottom: 2px solid var(--text-tertiary);
+  cursor: help;
+  font-weight: 500;
+}
+
+.key-term:hover {
+  border-bottom-color: var(--text-primary);
+  color: var(--text-primary);
+}
+
+.key-terms-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+.key-terms-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  width: 100%;
+  margin-bottom: 4px;
+}
+
+.key-term-chip {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 4px 12px;
+}

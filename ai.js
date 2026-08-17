@@ -23,6 +23,11 @@ Rules:
 
   const PRACTICE_PROMPT = (text, mode) => `Based on this concept, generate exactly 3 multiple-choice practice questions.\n\nConcept: ${text}\n\nReturn ONLY a JSON array, no markdown, no explanation:\n[\n  {\n    "question": "...",\n    "options": ["A", "B", "C", "D"],\n    "correct": 0,\n    "explanation": "..."\n  }\n]\n\ncorrect is the 0-based index of the right answer.`;
 
+  const HIGHLIGHT_PROMPT = (text) => `Read this explanation and identify 3 to 5 key terms that are most important to understand. Return ONLY a JSON array of the terms, no markdown, no explanation:
+["term1", "term2", "term3"]
+
+Explanation: ${text}`;
+
   const QUIZ_PROMPT = (text, mode) => `Based on this concept, generate exactly 4 multiple-choice quiz questions. These should be slightly harder than practice questions.\n\nConcept: ${text}\n\nReturn ONLY a JSON array, no markdown, no explanation:\n[\n  {\n    "question": "...",\n    "options": ["A", "B", "C", "D"],\n    "correct": 0,\n    "explanation": "..."\n  }\n]\n\ncorrect is the 0-based index of the right answer.`;
 
   async function callAPI(userMessage) {
@@ -65,6 +70,12 @@ Rules:
     return JSON.parse(clean);
   }
 
-  return { explain, generatePractice, generateQuiz };
+  async function getKeyTerms(text) {
+    const raw = await callAPI(HIGHLIGHT_PROMPT(text));
+    const clean = raw.replace(/```json|```/g, '').trim();
+    return JSON.parse(clean);
+  }
+
+  return { explain, generatePractice, generateQuiz, getKeyTerms };
 
 })();
