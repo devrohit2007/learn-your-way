@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: learn-your-way-api
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python server1.py
+    envVars:
+      - key: TEXT_API_KEY
+        sync: false
+      - key: VISION_API_KEY
+        sync: false
