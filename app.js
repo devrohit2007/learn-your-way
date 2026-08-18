@@ -145,7 +145,7 @@
     continueBtn.textContent = isImage ? "Extracting image..." : "Extracting PDF...";
     continueBtn.disabled = true;
     try {
-      const res = await fetch("https://learn-your-way-api.onrender.com/api/upload", { method: "POST", body: formData });
+      const res = await fetch("/api/upload", { method: "POST", body: formData });
       const data = await res.json();
       if (data.error) throw new Error(data.error);
       materialInput.value = data.text;

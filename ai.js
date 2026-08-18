@@ -31,7 +31,7 @@ Explanation: ${text}`;
   const QUIZ_PROMPT = (text, mode) => `Based on this concept, generate exactly 4 multiple-choice quiz questions. These should be slightly harder than practice questions.\n\nConcept: ${text}\n\nReturn ONLY a JSON array, no markdown, no explanation:\n[\n  {\n    "question": "...",\n    "options": ["A", "B", "C", "D"],\n    "correct": 0,\n    "explanation": "..."\n  }\n]\n\ncorrect is the 0-based index of the right answer.`;
 
   async function callAPI(userMessage) {
-    const response = await fetch('https://learn-your-way-api.onrender.com/api/chat', {
+    const response = await fetch('/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
