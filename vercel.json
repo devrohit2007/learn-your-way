@@ -1,6 +1,10 @@
 {
   "functions": {
-    "api/chat.py":   { "runtime": "python3.9", "maxDuration": 60 },
-    "api/upload.py": { "runtime": "python3.9", "maxDuration": 60 }
+    "api/chat.py": {
+      "maxDuration": 60
+    },
+    "api/upload.py": {
+      "maxDuration": 60
+    }
   }
 }
