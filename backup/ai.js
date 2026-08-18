@@ -61,16 +61,14 @@ Explanation: ${text}`;
 
   async function generatePractice(text, mode) {
     const raw = await callAPI(PRACTICE_PROMPT(text, mode));
-    const match = raw.match(/\[[\s\S]*\]/);
-    if (!match) throw new Error('Invalid response');
-    return JSON.parse(match[0]);
+    const clean = raw.replace(/```json|```/g, '').trim();
+    return JSON.parse(clean);
   }
 
   async function generateQuiz(text, mode) {
     const raw = await callAPI(QUIZ_PROMPT(text, mode));
-    const match = raw.match(/\[[\s\S]*\]/);
-    if (!match) throw new Error('Invalid response');
-    return JSON.parse(match[0]);
+    const clean = raw.replace(/```json|```/g, '').trim();
+    return JSON.parse(clean);
   }
 
   async function getKeyTerms(text) {

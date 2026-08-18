@@ -15,9 +15,16 @@
   <!-- NAV -->
   <nav class="nav">
     <a href="index.html" class="nav-logo">Learn Your Way</a>
-    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode">
-      <span class="theme-icon" id="themeIcon">☀</span>
-    </button>
+    <button class="hamburger-btn" id="hamburgerBtn" type="button" aria-label="Menu">⋮</button>
+    <div class="hamburger-menu hidden" id="hamburgerMenu">
+      <button class="menu-item" id="historyBtn" type="button">
+        <span class="menu-item-icon">⟳</span> Recent
+      </button>
+      <button class="menu-item" id="themeToggle" aria-label="Toggle theme">
+        <span class="menu-item-icon" id="themeIcon">☀</span>
+        <span id="themeLabel">Light mode</span>
+      </button>
+    </div>
   </nav>
 
   <!-- WORKSPACE -->
@@ -37,11 +44,9 @@
           aria-label="Learning material input"
         ></textarea>
 
+        <p class="demo-hint">Not sure what to paste? <button class="demo-hint-btn" id="demoBtn" type="button">Try the built-in demo →</button></p>
         <div class="input-actions">
-          <button class="btn btn-ghost" id="pdfBtn" type="button">Upload PDF</button><input type="file" id="pdfUpload" accept=".pdf" style="display:none" /><button class="btn btn-ghost" id="historyBtn" type="button">Recent</button>
-          <button class="btn btn-ghost" id="demoBtn" type="button">
-            Try the built-in demo
-          </button>
+          <button class="btn btn-ghost" id="pdfBtn" type="button">Upload PDF/Image</button><input type="file" id="pdfUpload" accept=".pdf,.jpg,.jpeg,.png,.webp" style="display:none" />
           <button class="btn btn-primary" id="continueBtn" type="button">
             Continue →
           </button>

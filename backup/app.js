@@ -6,36 +6,17 @@
   const html = document.documentElement;
   const themeToggle = document.getElementById('themeToggle');
   const themeIcon   = document.getElementById('themeIcon');
-  const themeLabel  = document.getElementById('themeLabel');
-  const hamburgerBtn  = document.getElementById('hamburgerBtn');
-  const hamburgerMenu = document.getElementById('hamburgerMenu');
 
   const savedTheme = localStorage.getItem('lyw-theme') || 'dark';
   html.setAttribute('data-theme', savedTheme);
-  if (themeIcon)  themeIcon.textContent  = savedTheme === 'dark' ? '☀' : '☾';
-  if (themeLabel) themeLabel.textContent = savedTheme === 'dark' ? 'Light mode' : 'Dark mode';
-
-  hamburgerBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    hamburgerMenu.classList.toggle('hidden');
-  });
-
-  document.addEventListener('click', () => {
-    hamburgerMenu.classList.add('hidden');
-  });
-
-  hamburgerMenu.addEventListener('click', (e) => {
-    e.stopPropagation();
-  });
+  themeIcon.textContent = savedTheme === 'dark' ? '☀' : '☾';
 
   themeToggle.addEventListener('click', () => {
     const current = html.getAttribute('data-theme');
     const next = current === 'dark' ? 'light' : 'dark';
     html.setAttribute('data-theme', next);
     localStorage.setItem('lyw-theme', next);
-    if (themeIcon)  themeIcon.textContent  = next === 'dark' ? '☀' : '☾';
-    if (themeLabel) themeLabel.textContent = next === 'dark' ? 'Light mode' : 'Dark mode';
-    hamburgerMenu.classList.add('hidden');
+    themeIcon.textContent = next === 'dark' ? '☀' : '☾';
   });
 
   // State
@@ -139,13 +120,13 @@
     const file = e.target.files[0];
     if (!file) return;
     e.target.value = "";
+    if (!file) return;
     const formData = new FormData();
     formData.append("file", file);
-    const isImage = /\.(jpe?g|png|webp)$/i.test(file.name);
-    continueBtn.textContent = isImage ? "Extracting image..." : "Extracting PDF...";
+    continueBtn.textContent = "Extracting PDF...";
     continueBtn.disabled = true;
     try {
-      const res = await fetch("http://localhost:5000/api/upload", { method: "POST", body: formData });
+      const res = await fetch("http://localhost:5000/api/pdf", { method: "POST", body: formData });
       const data = await res.json();
       if (data.error) throw new Error(data.error);
       materialInput.value = data.text;
@@ -198,7 +179,7 @@
     try {
       if (isDemo) {
         await delay(900);
-        renderExplanation(DEMO_EXPLANATIONS[currentLang][mode], mode);
+        renderExplanation(DEMO_EXPLANATIONS[mode], mode);
       } else {
         loadingText.textContent = 'Understanding your material...';
         const raw = await AI.explain(currentMaterial, mode, currentLang);
@@ -364,7 +345,7 @@
     try {
       if (isDemo) {
         await delay(800);
-        practiceData = DEMO_PRACTICE[currentLang];
+        practiceData = DEMO_PRACTICE;
       } else {
         practiceData = await AI.generatePractice(currentMaterial, currentMode);
       }
@@ -414,7 +395,7 @@
     try {
       if (isDemo) {
         await delay(900);
-        quizData = DEMO_QUIZ[currentLang];
+        quizData = DEMO_QUIZ;
       } else {
         quizData = await AI.generateQuiz(currentMaterial, currentMode);
       }
