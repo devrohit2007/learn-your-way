@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Learn Your Way — One Pager</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #f5f5f5;
+      color: #111;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      max-width: 780px;
+      margin: 0 auto;
+      background: #fff;
+      min-height: 100vh;
+      padding: 56px 48px;
+    }
+
+    /* Header */
+    .header {
+      border-bottom: 2px solid #111;
+      padding-bottom: 28px;
+      margin-bottom: 36px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .header-left h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2.6rem;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      color: #111;
+    }
+
+    .header-left h1 em {
+      font-style: italic;
+      color: #555;
+    }
+
+    .header-left .tagline {
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 8px;
+    }
+
+    .header-right {
+      text-align: right;
+    }
+
+    .header-right .event {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #999;
+    }
+
+    .header-right .author {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #111;
+      margin-top: 4px;
+    }
+
+    /* Section label */
+    .label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #999;
+      margin-bottom: 8px;
+    }
+
+    /* Grid layout */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin-bottom: 36px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 36px;
+    }
+
+    @media (max-width: 600px) {
+      .page { padding: 32px 24px; }
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .header { flex-direction: column; align-items: flex-start; }
+      .header-right { text-align: left; }
+    }
+
+    /* Cards */
+    .card {
+      border: 1px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 20px;
+    }
+
+    .card h3 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #111;
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      font-size: 0.85rem;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    /* Person section */
+    .person-block {
+      background: #111;
+      color: #fff;
+      border-radius: 10px;
+      padding: 28px;
+      margin-bottom: 36px;
+    }
+
+    .person-block .label {
+      color: #888;
+    }
+
+    .person-block .quote {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.3rem;
+      font-style: italic;
+      line-height: 1.4;
+      color: #fff;
+      margin: 12px 0 16px;
+    }
+
+    .person-block .who {
+      font-size: 0.85rem;
+      color: #aaa;
+    }
+
+    /* How it works */
+    .flow {
+      display: flex;
+      align-items: flex-start;
+      gap: 0;
+      margin-bottom: 36px;
+      flex-wrap: wrap;
+    }
+
+    .flow-step {
+      flex: 1;
+      min-width: 140px;
+      text-align: center;
+      padding: 0 8px;
+    }
+
+    .flow-step .step-num {
+      width: 32px;
+      height: 32px;
+      border: 1px solid #ddd;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #999;
+      margin: 0 auto 10px;
+    }
+
+    .flow-step .step-title {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #111;
+      margin-bottom: 4px;
+    }
+
+    .flow-step .step-desc {
+      font-size: 0.76rem;
+      color: #777;
+      line-height: 1.4;
+    }
+
+    .flow-arrow {
+      padding-top: 14px;
+      color: #ccc;
+      font-size: 1rem;
+    }
+
+    /* Key interaction */
+    .interaction {
+      border: 1px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 24px;
+      margin-bottom: 36px;
+      background: #fafafa;
+    }
+
+    .interaction .label { margin-bottom: 16px; }
+
+    .interaction-flow {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      align-items: flex-start;
+    }
+
+    .int-step {
+      font-size: 0.88rem;
+      color: #333;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .int-step.highlight {
+      font-weight: 600;
+      color: #111;
+    }
+
+    .int-step .arrow {
+      color: #bbb;
+      font-size: 0.8rem;
+    }
+
+    .int-modes {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+      margin-left: 20px;
+    }
+
+    .int-mode {
+      font-size: 0.78rem;
+      border: 1px solid #ddd;
+      border-radius: 20px;
+      padding: 3px 10px;
+      color: #555;
+    }
+
+    /* Section divider */
+    .divider {
+      border: none;
+      border-top: 1px solid #e0e0e0;
+      margin: 32px 0;
+    }
+
+    /* Disclosure table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+      margin-top: 8px;
+    }
+
+    th {
+      text-align: left;
+      font-weight: 600;
+      color: #111;
+      padding: 8px 12px;
+      border-bottom: 1px solid #e0e0e0;
+      background: #f5f5f5;
+    }
+
+    td {
+      padding: 8px 12px;
+      color: #555;
+      border-bottom: 1px solid #f0f0f0;
+      vertical-align: top;
+    }
+
+    /* Built vs mocked */
+    .status-built {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      background: #111;
+      color: #fff;
+      border-radius: 4px;
+      padding: 2px 7px;
+    }
+
+    .status-partial {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      background: #f0f0f0;
+      color: #555;
+      border-radius: 4px;
+      padding: 2px 7px;
+    }
+
+    /* Links */
+    .links-row {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .link-item {
+      font-size: 0.82rem;
+      color: #111;
+      text-decoration: none;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 1px;
+    }
+
+    /* Footer */
+    .footer {
+      border-top: 1px solid #e0e0e0;
+      padding-top: 20px;
+      margin-top: 36px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .footer p {
+      font-size: 0.75rem;
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <h1>Learn Your <em>Way</em></h1>
+      <p class="tagline">You don't have to learn it their way. Learn it your way.</p>
+    </div>
+    <div class="header-right">
+      <p class="event">Suvidha AI Hackathon 2026</p>
+      <p class="author">Rohit Gautam</p>
+    </div>
+  </div>
+
+  <!-- The person -->
+  <div class="person-block">
+    <p class="label">The person we built for</p>
+    <p class="quote">"I understand things when someone explains them to me. But the moment I open a textbook, I'm lost."</p>
+    <p class="who">A student who can grasp concepts conversationally but struggles when the same ideas are presented as dense, technical written material. The knowledge isn't the barrier — the format is.</p>
+  </div>
+
+  <!-- Problem + Solution -->
+  <div class="grid-2" style="margin-bottom:36px;">
+    <div>
+      <p class="label">The barrier</p>
+      <p style="font-size:0.88rem;color:#444;line-height:1.7;">Dense, jargon-heavy material locks out learners who think visually, narratively, or step-by-step. They are not less intelligent. They are being failed by a single presentation format that was never designed for how they learn.</p>
+    </div>
+    <div>
+      <p class="label">What changes</p>
+      <p style="font-size:0.88rem;color:#444;line-height:1.7;">The learner pastes any material and chooses how they want it explained. If it doesn't click, they hit <strong>"Explain it differently"</strong> and receive the same concept in a completely different format — until it lands.</p>
+    </div>
+  </div>
+
+  <!-- Key interaction -->
+  <div class="interaction">
+    <p class="label">The core interaction — this is what makes it different</p>
+    <div class="interaction-flow">
+      <div class="int-step">"I don't understand this."</div>
+      <div class="int-step"><span class="arrow">↓</span></div>
+      <div class="int-step highlight">Explain it differently.</div>
+      <div class="int-step"><span class="arrow">↓</span> Choose how:</div>
+      <div class="int-modes">
+        <span class="int-mode">◎ Simple</span>
+        <span class="int-mode">◈ Analogy</span>
+        <span class="int-mode">◱ Visual</span>
+        <span class="int-mode">◳ Step-by-step</span>
+      </div>
+      <div class="int-step"><span class="arrow">↓</span></div>
+      <div class="int-step highlight">"Now I understand."</div>
+    </div>
+  </div>
+
+  <!-- How it works -->
+  <p class="label">How it works</p>
+  <div class="flow" style="margin-bottom:36px;">
+    <div class="flow-step">
+      <div class="step-num">1</div>
+      <div class="step-title">Paste or upload</div>
+      <div class="step-desc">Any text, PDF, or image of learning material</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="step-num">2</div>
+      <div class="step-title">Choose a mode</div>
+      <div class="step-desc">Simple, Analogy, Visual, or Step-by-step</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="step-num">3</div>
+      <div class="step-title">Get the explanation</div>
+      <div class="step-desc">AI explains the concept in the chosen style</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="step-num">4</div>
+      <div class="step-title">Still unclear?</div>
+      <div class="step-desc">Hit "Explain differently" — same concept, new approach</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="step-num">5</div>
+      <div class="step-title">Practice + Quiz</div>
+      <div class="step-desc">Questions check understanding. Wrong answers loop back to re-explanation</div>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+  <!-- Features -->
+  <p class="label" style="margin-bottom:16px;">What is fully built</p>
+  <div class="grid-3" style="margin-bottom:36px;">
+    <div class="card">
+      <h3>4 explanation modes</h3>
+      <p>Simple, Analogy, Visual diagram, Step-by-step — all AI-generated, all switchable mid-session.</p>
+    </div>
+    <div class="card">
+      <h3>Adaptive re-explanation</h3>
+      <p>"Didn't get it?" buttons let the learner switch mode instantly without starting over.</p>
+    </div>
+    <div class="card">
+      <h3>Practice + Quiz</h3>
+      <p>3 practice questions + 4 quiz questions. Wrong quiz answers link back to re-explanation.</p>
+    </div>
+    <div class="card">
+      <h3>3 languages</h3>
+      <p>English, Hindi, Tamil — all explanations, practice, and quiz questions available in all three.</p>
+    </div>
+    <div class="card">
+      <h3>PDF + Image upload</h3>
+      <p>Text PDFs extracted directly. Images processed by a vision model for OCR and diagram description.</p>
+    </div>
+    <div class="card">
+      <h3>Listen / TTS</h3>
+      <p>Every explanation can be read aloud using the browser's Web Speech API — no extra service needed.</p>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+  <!-- AI Disclosure -->
+  <p class="label" style="margin-bottom:12px;">AI &amp; tool disclosures</p>
+  <table>
+    <tr>
+      <th>Tool / Model</th>
+      <th>What it was used for</th>
+    </tr>
+    <tr>
+      <td><strong>Claude (Anthropic)</strong></td>
+      <td>Coding assistant used throughout development to write, debug, and refine all project code</td>
+    </tr>
+    <tr>
+      <td><strong>nvidia/nemotron-3-ultra-550b-a55b</strong></td>
+      <td>Powers all text explanations, practice questions, quiz generation, and key term extraction inside the app</td>
+    </tr>
+    <tr>
+      <td><strong>meta/llama-3.2-90b-vision-instruct</strong></td>
+      <td>Vision model used to extract text and describe diagrams from uploaded images</td>
+    </tr>
+    <tr>
+      <td><strong>pypdf (open source)</strong></td>
+      <td>Extracts text from uploaded PDF files on the backend</td>
+    </tr>
+    <tr>
+      <td><strong>Web Speech API (browser built-in)</strong></td>
+      <td>Text-to-speech for the Listen feature — no external service</td>
+    </tr>
+  </table>
+
+  <p style="font-size:0.78rem;color:#999;margin-top:10px;">No datasets were used. All explanations are generated at runtime by the AI models above.</p>
+
+  <hr class="divider" />
+
+  <!-- Links -->
+  <p class="label">Project links</p>
+  <div class="links-row">
+    <a class="link-item" href="https://github.com/devrohit2007/learn-your-way" target="_blank">GitHub Repository</a>
+    <a class="link-item" href="#" target="_blank">Live Demo ← add after deployment</a>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>Learn Your Way · Suvidha AI Hackathon 2026</p>
+    <p>Rohit Gautam · Built entirely on Android using Termux</p>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Learn Your Way — Workspace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="workspace.css" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <a href="index.html" class="nav-logo">Learn Your Way</a>
+    <button class="hamburger-btn" id="hamburgerBtn" type="button" aria-label="Menu">⋮</button>
+    <div class="hamburger-menu hidden" id="hamburgerMenu">
+      <button class="menu-item" id="historyBtn" type="button">
+        <span class="menu-item-icon">⟳</span> Recent
+      </button>
+      <button class="menu-item" id="themeToggle" aria-label="Toggle theme">
+        <span class="menu-item-icon" id="themeIcon">☀</span>
+        <span id="themeLabel">Light mode</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- WORKSPACE -->
+  <main class="workspace" id="workspace">
+
+    <!-- STEP 1: INPUT -->
+    <section class="ws-section" id="inputSection">
+      <div class="ws-container">
+        <h1 class="ws-heading">What are you trying to understand?</h1>
+        <p class="ws-sub">Paste any text — a definition, a paragraph, a concept.</p>
+
+        <textarea
+          id="materialInput"
+          class="material-input"
+          placeholder="Paste your learning material here..."
+          rows="6"
+          aria-label="Learning material input"
+        ></textarea>
+
+        <p class="demo-hint">Not sure what to paste? <button class="demo-hint-btn" id="demoBtn" type="button">Try the built-in demo →</button></p>
+        <div class="input-actions">
+          <button class="btn btn-ghost" id="pdfBtn" type="button">Upload PDF/Image</button><input type="file" id="pdfUpload" accept=".pdf,.jpg,.jpeg,.png,.webp" style="display:none" />
+          <button class="btn btn-primary" id="continueBtn" type="button">
+            Continue →
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 2: CHOOSE MODE -->
+    <section class="ws-section hidden" id="modeSection">
+      <div class="ws-container">
+
+        <div class="material-preview" id="materialPreview"></div>
+
+        <div class="lang-selector">
+          <span class="lang-label">Language</span>
+          <div class="lang-buttons" role="group" aria-label="Choose language">
+            <button class="lang-btn active" data-lang="English" type="button">English</button>
+            <button class="lang-btn" data-lang="Hindi" type="button">हिंदी</button>
+            <button class="lang-btn" data-lang="Tamil" type="button">தமிழ்</button>
+          </div>
+        </div>
+        <h2 class="ws-heading-sm">How would you like this explained?</h2>
+
+        <div class="mode-buttons" role="group" aria-label="Explanation modes">
+          <button class="mode-btn" data-mode="simple" type="button">
+            <span class="mode-btn-icon">◎</span>
+            <span class="mode-btn-label">Simple</span>
+            <span class="mode-btn-desc">Plain language, no jargon</span>
+          </button>
+          <button class="mode-btn" data-mode="analogy" type="button">
+            <span class="mode-btn-icon">◈</span>
+            <span class="mode-btn-label">Analogy</span>
+            <span class="mode-btn-desc">A real-world comparison</span>
+          </button>
+          <button class="mode-btn" data-mode="visual" type="button">
+            <span class="mode-btn-icon">◱</span>
+            <span class="mode-btn-label">Visual</span>
+            <span class="mode-btn-desc">Diagram or flow</span>
+          </button>
+          <button class="mode-btn" data-mode="steps" type="button">
+            <span class="mode-btn-icon">◳</span>
+            <span class="mode-btn-label">Step-by-step</span>
+            <span class="mode-btn-desc">Sequential breakdown</span>
+          </button>
+        </div>
+
+        <button class="btn btn-ghost btn-sm" id="backToInputBtn" type="button">
+          ← Change material
+        </button>
+
+      </div>
+    </section>
+
+    <!-- STEP 3: EXPLANATION -->
+    <section class="ws-section hidden" id="explanationSection">
+      <div class="ws-container">
+
+        <div class="active-mode-bar" id="activeModeBar">
+          <span class="active-mode-icon" id="activeModeIcon"></span>
+          <span class="active-mode-label" id="activeModeLabel"></span>
+        </div>
+
+        <div class="loading-state hidden" id="loadingState">
+          <div class="loading-dots">
+            <span></span><span></span><span></span>
+          </div>
+          <p class="loading-text" id="loadingText">Understanding your material...</p>
+        </div>
+
+        <div class="explanation-output hidden" id="explanationOutput">
+          <div class="explanation-content" id="explanationContent"></div>
+          <div class="listen-bar">
+            <button class="btn-listen" id="listenBtn" type="button" aria-label="Listen to explanation">
+              <span id="listenIcon">🔊</span>
+              <span id="listenLabel">Listen</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="error-state hidden" id="errorState">
+          <p class="error-icon">⚠</p>
+          <p class="error-message" id="errorMessage">Something went wrong.</p>
+          <button class="btn btn-secondary btn-sm" id="retryBtn" type="button">Try again</button>
+        </div>
+
+        <div class="rethink-section hidden" id="rethinkSection">
+          <p class="rethink-label">Didn't quite get it?</p>
+          <div class="rethink-buttons" role="group" aria-label="Try a different explanation">
+            <button class="rethink-btn" data-mode="simple" type="button">
+              <span class="rethink-icon">◎</span> Explain it simpler
+            </button>
+            <button class="rethink-btn" data-mode="analogy" type="button">
+              <span class="rethink-icon">◈</span> Use an analogy
+            </button>
+            <button class="rethink-btn" data-mode="visual" type="button">
+              <span class="rethink-icon">◱</span> Show me visually
+            </button>
+            <button class="rethink-btn" data-mode="steps" type="button">
+              <span class="rethink-icon">◳</span> Break it into steps
+            </button>
+          </div>
+        </div>
+
+        <div class="bottom-actions hidden" id="bottomActions">
+          <button class="btn btn-ghost btn-sm" id="backToModeBtn" type="button">
+            ← Try another mode
+          </button>
+          <button class="btn btn-primary" id="practiceBtn" type="button">
+            Practice →
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- STEP 4: PRACTICE -->
+    <section class="ws-section hidden" id="practiceSection">
+      <div class="ws-container">
+        <h2 class="ws-heading-sm">Practice</h2>
+        <p class="ws-sub-sm">Answer these to check your understanding.</p>
+
+        <div id="practiceLoading" class="loading-state">
+          <div class="loading-dots"><span></span><span></span><span></span></div>
+          <p class="loading-text">Preparing practice questions...</p>
+        </div>
+
+        <div id="practiceQuestions" class="practice-questions hidden"></div>
+
+        <div class="practice-actions hidden" id="practiceActions">
+          <button class="btn btn-primary" id="checkAnswersBtn" type="button">Check answers</button>
+        </div>
+
+        <div class="practice-results hidden" id="practiceResults"></div>
+
+        <div class="practice-nav hidden" id="practiceNav">
+          <button class="btn btn-ghost btn-sm" id="backToExplainBtn" type="button">
+            ← Back to explanation
+          </button>
+          <button class="btn btn-primary" id="toQuizBtn" type="button">
+            Take the quiz →
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- STEP 5: QUIZ -->
+    <section class="ws-section hidden" id="quizSection">
+      <div class="ws-container">
+
+        <!-- Quiz intro -->
+        <div id="quizIntro">
+          <h2 class="ws-heading-sm">Quiz</h2>
+          <p class="ws-sub-sm">Four questions. No time limit. Take your time.</p>
+          <button class="btn btn-primary" id="startQuizBtn" type="button">Start quiz →</button>
+        </div>
+
+        <!-- Quiz questions -->
+        <div id="quizLoading" class="loading-state hidden">
+          <div class="loading-dots"><span></span><span></span><span></span></div>
+          <p class="loading-text">Preparing your quiz...</p>
+        </div>
+
+        <div id="quizQuestions" class="practice-questions hidden"></div>
+
+        <div class="practice-actions hidden" id="quizActions">
+          <button class="btn btn-primary" id="submitQuizBtn" type="button">Submit quiz</button>
+        </div>
+
+        <!-- Quiz results -->
+        <div id="quizResults" class="hidden">
+
+          <!-- Score card -->
+          <div class="quiz-score-card" id="quizScoreCard"></div>
+
+          <!-- Per-question results -->
+          <div id="quizResultItems" class="practice-results"></div>
+
+          <!-- If any wrong: offer re-explanation -->
+          <div id="quizRethink" class="hidden">
+            <div class="rethink-section">
+              <p class="rethink-label">Still unclear on some answers?</p>
+              <p class="quiz-rethink-sub">Go back and have the concept explained a different way.</p>
+              <div class="rethink-buttons" role="group" aria-label="Try a different explanation">
+                <button class="rethink-btn" data-mode="simple" type="button">
+                  <span class="rethink-icon">◎</span> Explain it simpler
+                </button>
+                <button class="rethink-btn" data-mode="analogy" type="button">
+                  <span class="rethink-icon">◈</span> Use an analogy
+                </button>
+                <button class="rethink-btn" data-mode="visual" type="button">
+                  <span class="rethink-icon">◱</span> Show me visually
+                </button>
+                <button class="rethink-btn" data-mode="steps" type="button">
+                  <span class="rethink-icon">◳</span> Break it into steps
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Final nav -->
+          <div class="practice-nav">
+            <button class="btn btn-ghost btn-sm" id="backToPracticeBtn" type="button">
+              ← Back to practice
+            </button>
+            <button class="btn btn-primary" id="startOverBtn" type="button">
+              Start over
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <div class="history-panel hidden" id="historyPanel">
+      <div class="history-header">
+        <span class="history-title">Recent</span>
+        <button class="history-close" id="historyClose" type="button">✕</button>
+      </div>
+      <div class="history-list" id="historyList"></div>
+      <button class="btn btn-ghost btn-sm" id="historyClearBtn" type="button">Clear history</button>
+    </div>
+    <script src="demo.js"></script>
+  <script src="ai.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
