@@ -324,8 +324,14 @@
     if (!('speechSynthesis' in window)) { listenLabel.textContent = 'Not supported'; return; }
     if (isSpeaking) { stopSpeech(); return; }
     if (!currentExplanationText) return;
+
+    // Clear any stale speech before starting a new explanation.
+    window.speechSynthesis.cancel();
+
     const utterance = new SpeechSynthesisUtterance(currentExplanationText);
-    utterance.rate = 0.95;
+    utterance.rate = 0.90;
+    utterance.pitch = 1.0;
+    utterance.volume = 1.0;
     utterance.onstart = () => {
       isSpeaking = true;
       listenIcon.textContent = '⏹';
