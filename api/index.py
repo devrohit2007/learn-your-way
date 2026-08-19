@@ -16,7 +16,7 @@ VISION_MODEL = "meta/llama-3.2-11b-vision-instruct"
 NVIDIA_ENDPOINT = "https://integrate.api.nvidia.com/v1/chat/completions"
 
 
-def nvidia_request(api_key, model, messages, max_tokens=800):
+def nvidia_request(api_key, model, messages, max_tokens=800, timeout=55):
     payload = json.dumps({
         "model": model,
         "max_tokens": max_tokens,
@@ -33,7 +33,7 @@ def nvidia_request(api_key, model, messages, max_tokens=800):
         method="POST"
     )
 
-    with urllib.request.urlopen(req, timeout=55) as response:
+    with urllib.request.urlopen(req, timeout=timeout) as response:
         result = json.loads(response.read().decode())
 
     message = result["choices"][0]["message"]
@@ -173,7 +173,9 @@ def upload():
             text = nvidia_request(
                 VISION_API_KEY,
                 VISION_MODEL,
-                messages
+                messages,
+                max_tokens=800,
+                timeout=120
             )
 
             return jsonify({
